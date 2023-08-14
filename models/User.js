@@ -1,4 +1,5 @@
 const knex = require("../database/connection");
+const bcrypt = require("bcrypt");
 
 class User {
     async findAll() {
@@ -14,6 +15,15 @@ class User {
         try {
             const result = await knex.select(["id", "name", "email"]).where({ id: id }).table("users");
             return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async create(name, email, password) {
+        try {
+            const hash = await bcrypt.hashSync(password, 20);
+            await knex.insert({ name, email, password: hash }).table("users");
         } catch (err) {
             throw err;
         }
