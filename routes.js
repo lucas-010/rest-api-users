@@ -20,5 +20,6 @@ router.get("/", (req, res) => {
 router.get("/user", UserController.getAll);
 router.get("/user/:id", idParamValidator, UserController.getById);
 router.post("/user", fieldsBodyValidator, UserController.create);
+router.delete("/user/:id", idParamValidator, UserController.delete);
 
 module.exports = router;

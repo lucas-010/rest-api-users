@@ -52,6 +52,23 @@ class UserController {
             return res.status(500).json({ msg: "Não foi possível cadastrar o usuário.", error: err });
         }
     }
+
+    async delete(req, res) {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+            const result = await User.delete(req.params.id);
+            if (result == 1) {
+                return res.status(200).json({ msg: "Usuário deletado com sucesso." });
+            }
+            return res.status(404).json({ msg: "Usuário não encontrado." });
+
+        } catch (err) {
+            return res.status(500).json({ msg: "Não foi possível deletar o usuário.", error: err });
+        }
+    }
 }
 
 module.exports = new UserController();
