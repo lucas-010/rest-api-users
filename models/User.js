@@ -9,6 +9,15 @@ class User {
             throw err;
         }
     }
+
+    async findById(id) {
+        try {
+            const result = await knex.select(["id", "name", "email"]).where({ id: id }).table("users");
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
 }
 
 module.exports = new User();

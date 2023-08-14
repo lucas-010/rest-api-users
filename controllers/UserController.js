@@ -8,7 +8,6 @@ class UserController {
         } catch (err) {
             res.status(500).json({ msg: "Não foi possível buscar os usuários.", error: err });                                     
         }
-
     }
 }
 
