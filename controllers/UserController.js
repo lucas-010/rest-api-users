@@ -5,7 +5,11 @@ class UserController {
     async getAll(req, res) {
         try {
             const results = await User.findAll();
-            return res.json(results);
+            
+            if (results.length > 0) {
+                return res.status(200).json(results);
+            }
+            return res.status(404).json({ msg: "Nenhum usuário encontrado." });
         } catch (err) {
             return res.status(500).json({ msg: "Não foi possível buscar os usuários.", error: err });                                     
         }
@@ -18,9 +22,9 @@ class UserController {
                 return res.status(400).json({ errors: errors.array() });
             }
 
-            const user = await User.findById(req.params.id);
-            if (user) {
-                return res.status(200).json({ user });
+            const result = await User.findById(req.params.id);
+            if (result.length > 0) {
+                return res.status(200).json(result);
             }
 
             return res.status(404).json({ msg: "Usuário inexistente." });
