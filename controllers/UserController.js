@@ -33,6 +33,25 @@ class UserController {
             return res.status(500).json({ msg: "Não foi possível buscar o usuário.", error: err });
         }
     }
+
+    async create(req, res) {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
+            const { name, email, password } = req.body;
+            const emailVerify = await User.findByEmail(email);
+            if (emailVerify.length > 0) {
+                return res.status(406).json({ msg: "Este email já está cadastrado." });
+            }
+            await User.create(name, email, password);
+            return res.status(201).json({ msg: "Usuário cadastrado com sucesso." });
+        } catch (err) {
+            return res.status(500).json({ msg: "Não foi possível cadastrar o usuário.", error: err });
+        }
+    }
 }
 
 module.exports = new UserController();
