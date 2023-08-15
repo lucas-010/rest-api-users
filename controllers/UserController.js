@@ -27,7 +27,7 @@ class UserController {
                 return res.status(200).json(result);
             }
 
-            return res.status(404).json({ msg: "Usuário inexistente." });
+            return res.status(404).json({ msg: "Usuário não encontrado." });
 
         } catch (err) {
             return res.status(500).json({ msg: "Não foi possível buscar o usuário.", error: err });
@@ -67,6 +67,42 @@ class UserController {
 
         } catch (err) {
             return res.status(500).json({ msg: "Não foi possível deletar o usuário.", error: err });
+        }
+    }
+
+    async update(req, res) {
+        try {
+            const errors = validationResult(req);
+            let resultEmail = 0;
+            let resultName = 0;
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
+            if (req.body.email != undefined && req.body.email != "") {
+                resultEmail = await User.updateEmail(req.params.id, req.body.email);
+            }
+
+            if (req.body.name != undefined && req.body.name != "") {
+                resultName = await User.updateName(req.params.id, req.body.name);
+            }
+
+            if (resultEmail == 1 && resultName == 1) {
+                return res.status(200).json({ msg: "O nome e o email do usuário foram alterados." });
+            }
+
+            if (resultEmail == 1) {
+                return res.status(200).json({ msg: "O email do usuário foi alterado." });
+            }
+
+            if (resultName == 1) {
+                return res.status(200).json({ msg: "O nome do usuário foi alterado." });
+            }
+
+            return res.status(404).json({ msg: "Usuário não encontrado." })
+
+        } catch (err) {
+            res.status(500).json({ msg: "Não foi possível atualizar o usuário.", errors: err })
         }
     }
 }

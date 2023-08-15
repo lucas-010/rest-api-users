@@ -21,5 +21,6 @@ router.get("/user", UserController.getAll);
 router.get("/user/:id", idParamValidator, UserController.getById);
 router.post("/user", fieldsBodyValidator, UserController.create);
 router.delete("/user/:id", idParamValidator, UserController.delete);
+router.put("/user/:id", idParamValidator, UserController.update);
 
 module.exports = router;

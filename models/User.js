@@ -46,6 +46,24 @@ class User {
             throw err;
         }
     }
+
+    async updateName(id, name) {
+        try {
+            const result = await knex.update({ name }).where({ id }).table("users");
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async updateEmail(id, email) {
+        try {
+            const result = await knex.update({ email }).where({ id }).table("users");
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
 }
 
 module.exports = new User();
